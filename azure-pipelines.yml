@@ -20,6 +20,7 @@ steps:
     terraformVersion: 'latest'
 
 - task: TerraformTaskV4@4
+  displayName: Terraform init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -30,23 +31,21 @@ steps:
     backendAzureRmKey: '$(backendAzureRmKey)'
 
 - task: TerraformTaskV4@4
+  displayName: Validate
   inputs:
     provider: 'azurerm'
     command: 'validate'
 
 - task: TerraformTaskV4@4
+  displayName: Plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
     environmentServiceNameAzureRM: 'myazuresubscription'
 
 - task: TerraformTaskV4@4
+  displayName: Apply
   inputs:
     provider: 'azurerm'
     command: 'apply'
     environmentServiceNameAzureRM: 'myazuresubscription'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
