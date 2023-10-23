@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- group: terraformvars
+
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
@@ -20,11 +23,11 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'non-prod-mfe-pfeborges(3464f809-852d-45e3-846c-f5411419cc83)'
-    backendAzureRmResourceGroupName: 'infraborges-rg'
-    backendAzureRmStorageAccountName: 'shellstorageborges'
-    backendAzureRmContainerName: 'temp'
-    backendAzureRmKey: 'vmdemos'
+    backendServiceArm: 'myazuresubscription'
+    backendAzureRmResourceGroupName: '$(backendAzureRmResourceGroupName)'
+    backendAzureRmStorageAccountName: '$(backendAzureRmStorageAccountName)'
+    backendAzureRmContainerName: '$(backendAzureRmContainerName)'
+    backendAzureRmKey: '$(backendAzureRmKey)'
 
 - task: TerraformTaskV4@4
   inputs:
@@ -35,13 +38,13 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    environmentServiceNameAzureRM: 'non-prod-mfe-pfeborges(3464f809-852d-45e3-846c-f5411419cc83)'
+    environmentServiceNameAzureRM: 'myazuresubscription'
 
 - task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    environmentServiceNameAzureRM: 'non-prod-mfe-pfeborges(3464f809-852d-45e3-846c-f5411419cc83)'
+    environmentServiceNameAzureRM: 'myazuresubscription'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
